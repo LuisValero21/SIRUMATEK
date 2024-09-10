@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Registrar Empleado</title>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+  <style>
+    .navbar {
+      background-color: #f8f9fa;
+      padding: 10px;
+    }
+    .navbar-brand img {
+      height: 50px;
+    }
+    .form-container {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      flex-grow: 1;
+    }
+    .card {
+      width: 30rem;
+    }
+    .form-group {
+      margin-bottom: 0.5cm;
+    }
+    .button-group {
+      display: flex;
+      justify-content: space-between;
+      width: 100%;
+      margin-top: 0.5cm;
+    }
+  </style>
+</head>
+<body class="d-flex flex-column vh-100">
+  <!-- Menú Superior -->
+  <nav class="navbar navbar-light">
+    <a class="navbar-brand" href="#">
+      <img src="assets/logo.png" alt="Logo" width="250" height="50">
+    </a>
+  </nav>
+
+  <!-- Contenido Principal -->
+  <div class="form-container">
+    <div class="card p-4 shadow">
+      <h2 class="text-center mb-4">Registrar Empleado</h2>
+      <form (ngSubmit)="onSubmit()">
+        <div class="form-group">
+          <label for="cedula" class="form-label">Cédula:</label>
+          <input type="text" id="cedula" class="form-control" [(ngModel)]="empleado.cedula" name="cedula" required>
+        </div>
+        <div class="form-group">
+          <label for="nombre" class="form-label">Nombre:</label>
+          <input type="text" id="nombre" class="form-control" [(ngModel)]="empleado.nombre" name="nombre" required>
+        </div>
+        <div class="form-group">
+          <label for="apellido" class="form-label">Apellido:</label>
+          <input type="text" id="apellido" class="form-control" [(ngModel)]="empleado.apellido" name="apellido" required>
+        </div>
+        <div class="form-group">
+          <label for="fechaNacimiento" class="form-label">Fecha de Nacimiento:</label>
+          <input type="date" id="fechaNacimiento" class="form-control" [(ngModel)]="empleado.fechaNacimiento" name="fechaNacimiento" required>
+        </div>
+        <div class="form-group">
+          <label for="fechaIngreso" class="form-label">Fecha de Ingreso:</label>
+          <input type="date" id="fechaIngreso" class="form-control" [(ngModel)]="empleado.fechaIngreso" name="fechaIngreso" required>
+        </div>
+        <div class="form-group">
+          <label for="sexo" class="form-label">Sexo:</label>
+          <select id="sexo" class="form-control" [(ngModel)]="empleado.sexo" name="sexo" required>
+            <option value="M">Masculino</option>
+            <option value="F">Femenino</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="correo" class="form-label">Correo:</label>
+          <input type="email" id="correo" class="form-control" [(ngModel)]="empleado.correo" name="correo" required>
+        </div>
+        <div class="form-group">
+          <label for="telefono" class="form-label">Teléfono:</label>
+          <input type="text" id="telefono" class="form-control" [(ngModel)]="empleado.telefono" name="telefono" required>
+        </div>
+        <button type="submit" class="btn btn-primary w-100" style="margin-top: 0.5cm;">Guardar</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- Botones Inferiores -->
+  <div class="button-group px-3">
+    <button class="btn btn-secondary" (click)="onBack()">Atrás</button>
+  </div>
+
+  <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>
