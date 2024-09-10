@@ -1,0 +1,15 @@
+.container {
+  min-height: 100vh;
+}
+
+.navbar {
+  padding: 1rem;
+}
+
+.card {
+  max-width: 400px;
+}
+
+button {
+  margin-top: 0.5rem;
+}
