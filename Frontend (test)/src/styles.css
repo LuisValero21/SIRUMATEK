@@ -1,0 +1,30 @@
+body {
+  background-color: #f8f9fa;
+}
+
+.card {
+  border-radius: 10px;
+}
+
+.btn {
+  border-radius: 5px;
+}
+
+h2 {
+  color: #343a40;
+}
+
+.table {
+  border-radius: 5px;
+  overflow: hidden;
+}
+
+.table th,
+.table td {
+  vertical-align: middle;
+}
+
+.table-responsive {
+  max-height: 60vh;
+  overflow-y: auto;
+}
