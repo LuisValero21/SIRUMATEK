@@ -1,0 +1,28 @@
+{
+  "properties": [
+    {
+      "name": "spring.jpa.properties.hibernate.dialect",
+      "type": "java.lang.String",
+      "description": "Description for spring.jpa.properties.hibernate.dialect."
+    },
+    {
+      "name": "spring.hikari.maximum-pool-size",
+      "type": "java.lang.String",
+      "description": "Description for spring.hikari.maximum-pool-size."
+    },
+    {
+      "name": "spring.hikari.connection-timeout",
+      "type": "java.lang.String",
+      "description": "Description for spring.hikari.connection-timeout."
+    },
+    {
+      "name": "spring.hikari.idle-timeout",
+      "type": "java.lang.String",
+      "description": "Description for spring.hikari.idle-timeout."
+    },
+    {
+      "name": "spring.hikari.max-lifetime",
+      "type": "java.lang.String",
+      "description": "Description for spring.hikari.max-lifetime."
+    }
+  ] }
