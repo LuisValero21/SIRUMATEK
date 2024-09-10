@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Menú Administrador</title>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+  <style>
+    .navbar {
+      margin-bottom: 20px; /* Espacio entre el menú y el contenido */
+    }
+    .navbar-brand img {
+      height: 50px;
+    }
+    .main-title {
+      margin-top: 20px;
+      text-align: center;
+    }
+    .button-group {
+      display: flex;
+      justify-content: center;
+      gap: 20px; /* Espacio entre los botones */
+    }
+    .btn-custom {
+      width: 200px; /* Ajusta el ancho de los botones */
+    }
+  </style>
+</head>
+<body>
+  <!-- Menú Superior -->
+  <nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <div class="container">
+      <a class="navbar-brand" href="#">
+        <img src="assets/logo.png" alt="Logo" class="d-inline-block align-top">
+      </a>
+      <div class="ml-auto">
+        <button class="btn btn-outline-danger" (click)="logout()">Cerrar Sesión</button>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Contenido Principal -->
+  <div class="container">
+    <!-- Título -->
+    <h2 class="main-title">Menú de Administrador</h2>
+
+    <!-- Botones -->
+    <div class="button-group mt-4">
+      <button class="btn btn-success btn-custom" routerLink="/registrar-empleado">
+        Registrar Empleado
+      </button>
+      <button class="btn btn-info btn-custom" routerLink="/lista-empleados">
+        Ver Lista de Empleados
+      </button>
+    </div>
+  </div>
+
+  <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>
