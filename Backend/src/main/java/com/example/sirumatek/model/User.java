@@ -16,21 +16,25 @@ public class User {
     private String correo;
 
     @Column(nullable = false)
-    private String contraseña;
+    private String contrasena;
 
     @Column(nullable = false)
     private String rol;
 
-    public String getRol() {
-        return "";
+    public Long getId() {
+        return id;
     }
 
-    public String getContraseña() {
-        return contraseña;
+    public void setId(Long id) {
+        this.id = id;
     }
 
-    public void setContraseña(String contraseña) {
-        this.contraseña = contraseña;
+    public String getNombre() {
+        return nombre;
+    }
+
+    public void setNombre(String nombre) {
+        this.nombre = nombre;
     }
 
     public String getCorreo() {
@@ -41,5 +45,19 @@ public class User {
         this.correo = correo;
     }
 
-    // Getters y Setters
+    public String getContrasena() {
+        return contrasena;
+    }
+
+    public void setContrasena(String contrasena) {
+        this.contrasena = contrasena;
+    }
+
+    public String getRol() {
+        return rol;
+    }
+
+    public void setRol(String rol) {
+        this.rol = rol;
+    }
 }

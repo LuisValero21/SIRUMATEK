@@ -9,10 +9,10 @@ import javax.persistence.Transient;
 @Table(name = "empleado_departamento")
 public class EmployeeDepartment {
     @Id
-    private Long empleadoId;
+    private Long empleado_id;
 
     @Transient
-    private Long departamentoId;
+    private Long departamento_id;
 
     // Relación con Empleado y Departamento
 
