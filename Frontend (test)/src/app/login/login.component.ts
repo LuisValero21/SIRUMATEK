@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
-import { AuthService } from './../../services/auth.service';
+import { AuthService } from '../../services/auth.service';
 import { HttpClient } from '@angular/common/http';
 
 @Component({
@@ -15,14 +15,16 @@ export class LoginComponent {
   constructor(private http: HttpClient, private router: Router) {}
 
   login() {
-    console.log(this.email, this.password)
-    this.http.post('http://localhost:8080/api/auth/login', { correo: this.email, contraseña: this.password })
+    this.http.post('http://localhost:8080/api/auth/login', { email: this.email, password: this.password },
+      { headers: { 'Content-Type': 'application/json' } }
+    )
       .subscribe(
         response => {
           alert('Login exitoso');
           this.router.navigate(['/menu-admin']);
         },
         error => {
+          console.log(error)
           alert('Credenciales incorrectas');
         }
       );
