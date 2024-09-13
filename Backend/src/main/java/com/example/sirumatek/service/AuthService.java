@@ -13,6 +13,6 @@ public class AuthService {
     public boolean authenticate(String email, String password) {
         User user;
         user = userRepository.findByCorreo(email);
-        return user != null && user.getContraseña().equals(password);
+        return user != null && user.getContrasena().equals(password);
     }
 }

@@ -30,7 +30,7 @@ public class CustomUserDetailsService implements UserDetailsService {
         }
 
         UserBuilder builder = org.springframework.security.core.userdetails.User.withUsername(user.getCorreo());
-        builder.password(user.getContraseña());
+        builder.password(user.getContrasena());
         builder.authorities(Collections.singletonList(new SimpleGrantedAuthority(user.getRol())));
 
         return builder.build();

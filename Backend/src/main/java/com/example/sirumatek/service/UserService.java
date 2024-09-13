@@ -39,4 +39,8 @@ public class UserService {
     }
 
     public User getUserById(Long id) { return null; }
+
+    public User findByEmailAndPassword(String email, String password) {
+        return userRepository.findByCorreoAndContrasena(email, password).get();
+    }
 }
