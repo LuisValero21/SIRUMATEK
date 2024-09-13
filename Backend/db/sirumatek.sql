@@ -2,40 +2,40 @@
 CREATE DATABASE SIRUMATEK;
 
 -- Crear tabla Usuario
-CREATE TABLE Usuario (
-    ID INT AUTO_INCREMENT PRIMARY KEY,
-    Nombre VARCHAR(100) NOT NULL,
-    Correo VARCHAR(100) NOT NULL UNIQUE,
-    Contraseña VARCHAR(255) NOT NULL,
-    Rol VARCHAR(10) NOT NULL
+CREATE TABLE usuario (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    nombre VARCHAR(100) NOT NULL,
+    correo VARCHAR(100) NOT NULL UNIQUE,
+    contrasena VARCHAR(255) NOT NULL,
+    rol VARCHAR(10) NOT NULL
 );
 
 -- Crear tabla Empleado
-CREATE TABLE Empleado (
-    ID INT AUTO_INCREMENT PRIMARY KEY,
-    Cedula VARCHAR(20) NOT NULL UNIQUE,
-    Nombre VARCHAR(100) NOT NULL,
-    Apellido VARCHAR(100) NOT NULL,
-    Fecha_Nacimiento DATE NOT NULL,
-    Fecha_Ingreso DATE NOT NULL,
-    Sexo CHAR(1) NOT NULL,
-    Correo VARCHAR(100) NOT NULL UNIQUE,
-    Teléfono VARCHAR(20) NOT NULL,
-    CONSTRAINT chk_sexo CHECK (Sexo IN ('M', 'F'))
+CREATE TABLE empleado (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    cedula VARCHAR(20) NOT NULL UNIQUE,
+    nombre VARCHAR(100) NOT NULL,
+    apellido VARCHAR(100) NOT NULL,
+    fecha_nacimiento DATE NOT NULL,
+    fecha_ingreso DATE NOT NULL,
+    sexo CHAR(1) NOT NULL,
+    correo VARCHAR(100) NOT NULL UNIQUE,
+    telefono VARCHAR(20) NOT NULL,
+    CONSTRAINT chk_sexo CHECK (sexo IN ('M', 'F'))
 );
 
 -- Crear tabla Departamento
-CREATE TABLE Departamento (
-    ID INT AUTO_INCREMENT PRIMARY KEY,
-    Nombre VARCHAR(100) NOT NULL UNIQUE,
-    CONSTRAINT chk_departamento CHECK (Nombre = 'RRHH')
+CREATE TABLE departamento (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    nombre VARCHAR(100) NOT NULL UNIQUE,
+    CONSTRAINT chk_departamento CHECK (nombre = 'RRHH')
 );
 
 -- Crear tabla Empleado_Departamento para la relación entre Empleado y Departamento
-CREATE TABLE Empleado_Departamento (
-    Empleado_ID INT NOT NULL,
-    Departamento_ID INT NOT NULL,
-    PRIMARY KEY (Empleado_ID, Departamento_ID),
-    FOREIGN KEY (Empleado_ID) REFERENCES Empleado(ID) ON DELETE CASCADE,
-    FOREIGN KEY (Departamento_ID) REFERENCES Departamento(ID) ON DELETE CASCADE
+CREATE TABLE empleado_departamento (
+    empleado_id INT NOT NULL,
+    departamento_id INT NOT NULL,
+    PRIMARY KEY (empleado_id, departamento_id),
+    FOREIGN KEY (empleado_id) REFERENCES empleado(id) ON DELETE CASCADE,
+    FOREIGN KEY (departamento_id) REFERENCES departamento(id) ON DELETE CASCADE
 );
