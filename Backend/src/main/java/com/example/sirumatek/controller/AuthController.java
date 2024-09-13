@@ -24,8 +24,8 @@ public class AuthController {
 
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody LoginRequest loginRequest) {
-        Optional<User> user = userRepository.findByCorreoAndContraseña(
-                loginRequest.getCorreo(), loginRequest.getContraseña());
+        Optional<User> user = userRepository.findByCorreoAndContrasena(
+                loginRequest.getEmail(), loginRequest.getPassword());
 
         if (user.isPresent()) {
             // Aquí puedes manejar la lógica de la sesión o token de autenticación
