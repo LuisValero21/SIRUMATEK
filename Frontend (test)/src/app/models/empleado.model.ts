@@ -3,8 +3,8 @@ export interface Empleado {
   cedula: string;
   nombre: string;
   apellido: string;
-  fechaNacimiento: string;
-  fechaIngreso: string;
+  fecha_nacimiento: string;
+  fecha_ingreso: string;
   sexo: string;
   correo: string;
   telefono: string;
