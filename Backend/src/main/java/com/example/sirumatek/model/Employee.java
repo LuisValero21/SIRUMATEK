@@ -21,9 +21,11 @@ public class Employee {
     private String apellido;
 
     @Column(nullable = false)
+    @Temporal(TemporalType.DATE)
     private Date fecha_nacimiento;
 
     @Column(nullable = false)
+    @Temporal(TemporalType.DATE)
     private Date fecha_ingreso;
 
     @Column(nullable = false)
