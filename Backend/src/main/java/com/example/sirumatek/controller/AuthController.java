@@ -12,6 +12,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Optional;
 
 @RestController
@@ -29,7 +31,9 @@ public class AuthController {
 
         if (user.isPresent()) {
             // Aquí puedes manejar la lógica de la sesión o token de autenticación
-            return ResponseEntity.ok("Login exitoso");
+            Map<String, String> response = new HashMap<>();
+            response.put("message", "Login exitoso");
+            return ResponseEntity.ok(response);
         } else {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Credenciales incorrectas");
         }
