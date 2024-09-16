@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Empleado } from '../models/empleado.model';
+import { IEmpleado } from '../models/empleado.model';
 import { Router } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
 
@@ -10,14 +10,17 @@ import { HttpClient } from '@angular/common/http';
 })
 export class ListaEmpleadosComponent implements OnInit {
 
-  empleados: any[] = [];
+  empleados: IEmpleado[] = [];
 
   constructor(private http: HttpClient) {}
 
   ngOnInit() {
     this.http.get<any[]>('/api/empleados/listar')
       .subscribe(data => {
+        console.log('Datos recibidos:', data);
         this.empleados = data;
+      }, error => {
+        console.error("Error al obtener empleados", error);
       });
   }
 
