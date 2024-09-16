@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { Empleado } from '../app/models/empleado.model';
+import { IEmpleado } from '../app/models/empleado.model';
 
 @Injectable({
   providedIn: 'root'
@@ -11,20 +11,20 @@ export class EmpleadoService {
 
   constructor(private http: HttpClient) {}
 
-  getAllEmpleados(): Observable<Empleado[]> {
-    return this.http.get<Empleado[]>(this.apiUrl);
+  getAllEmpleados(): Observable<IEmpleado[]> {
+    return this.http.get<IEmpleado[]>(this.apiUrl);
   }
 
-  getEmpleadoById(id: number): Observable<Empleado> {
-    return this.http.get<Empleado>(`${this.apiUrl}/${id}`);
+  getEmpleadoById(id: number): Observable<IEmpleado> {
+    return this.http.get<IEmpleado>(`${this.apiUrl}/${id}`);
   }
 
-  createEmpleado(empleado: Empleado): Observable<Empleado> {
-    return this.http.post<Empleado>(this.apiUrl, empleado);
+  createEmpleado(empleado: IEmpleado): Observable<IEmpleado> {
+    return this.http.post<IEmpleado>(this.apiUrl, empleado);
   }
 
-  updateEmpleado(id: number, empleado: Empleado): Observable<Empleado> {
-    return this.http.put<Empleado>(`${this.apiUrl}/${id}`, empleado);
+  updateEmpleado(id: number, empleado: IEmpleado): Observable<IEmpleado> {
+    return this.http.put<IEmpleado>(`${this.apiUrl}/${id}`, empleado);
   }
 
   deleteEmpleado(id: number): Observable<void> {
