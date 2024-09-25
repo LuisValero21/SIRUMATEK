@@ -2,6 +2,8 @@ package com.example.sirumatek.controller;
 
 import com.example.sirumatek.model.User;
 import com.example.sirumatek.repository.UserRepository;
+import com.example.sirumatek.service.UserService;
+import com.example.sirumatek.util.JwtUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -23,19 +25,21 @@ public class AuthController {
 
     @Autowired
     private UserRepository userRepository;
+    private UserService userService;
+    private JwtUtil jwtUtil;
 
     @PostMapping("/login")
-    public ResponseEntity<?> login(@RequestBody LoginRequest loginRequest) {
-        Optional<User> user = userRepository.findByCorreoAndContrasena(
-                loginRequest.getEmail(), loginRequest.getPassword());
-
-        if (user.isPresent()) {
-            // Aquí puedes manejar la lógica de la sesión o token de autenticación
-            Map<String, String> response = new HashMap<>();
-            response.put("message", "Login exitoso");
-            return ResponseEntity.ok(response);
-        } else {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Credenciales incorrectas");
+    public ResponseEntity<?> login(@RequestBody User user) {
+        User foundUser = userService.findByEmail(user.getUsername());
+        if (foundUser != null && passwordMatches(user.getContrasena(), foundUser.getContrasena())) {
+            String token = jwtUtil.generateToken(user.getUsername());
+            return ResponseEntity.ok(token);
         }
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid credentials");
+    }
+
+    private boolean passwordMatches(String rawPassword, String storedPassword) {
+        // Implementa la lógica para comparar contraseñas (por ejemplo, utilizando BCrypt)
+        return rawPassword.equals(storedPassword);
     }
 }
