@@ -11,6 +11,7 @@ import { HttpClient } from '@angular/common/http';
 export class ListaEmpleadosComponent implements OnInit {
 
   empleados: IEmpleado[] = [];
+  error: string = '';
 
   constructor(private http: HttpClient) {}
 
@@ -21,6 +22,7 @@ export class ListaEmpleadosComponent implements OnInit {
         this.empleados = data;
       }, error => {
         console.error("Error al obtener empleados", error);
+        this.error = 'No se pudieron cargar los empleados. Intente nuevamente más tarde.';
       });
   }
 
