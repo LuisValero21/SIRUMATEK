@@ -7,6 +7,7 @@ import com.example.sirumatek.util.JwtUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 import com.example.sirumatek.service.AuthService;
 import com.example.sirumatek.model.LoginRequest;
@@ -32,12 +33,17 @@ public class AuthController {
     @Autowired
     private JwtUtil jwtUtil;
 
+    private final BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder(); // Agrega esto
+
     @PostMapping("/login")
-    public ResponseEntity<?> login(@RequestBody User user) {
+    public ResponseEntity<?> login(@RequestBody LoginRequest loginRequest) {
         try {
-            User foundUser = userService.findByEmail(user.getUsername());
-            if (foundUser != null && passwordMatches(user.getContrasena(), foundUser.getContrasena())) {
-                String token = jwtUtil.generateToken(user.getUsername());
+            // Busca el usuario por email
+            User foundUser = userService.findByEmail(loginRequest.getEmail());
+
+            // Verifica las credenciales
+            if (foundUser != null && passwordEncoder.matches(loginRequest.getPassword(), foundUser.getContrasena())) {
+                String token = jwtUtil.generateToken(foundUser.getCorreo());
                 return ResponseEntity.ok(token);
             }
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid credentials");
@@ -47,8 +53,14 @@ public class AuthController {
         }
     }
 
+    @PostMapping("/register")
+    public ResponseEntity<User> registerUser(@RequestBody User user) {
+        User registeredUser = userService.registerUser(user);
+        return ResponseEntity.status(HttpStatus.CREATED).body(registeredUser);
+    }
+
     private boolean passwordMatches(String rawPassword, String storedPassword) {
         // Implementa la lógica para comparar contraseñas (por ejemplo, utilizando BCrypt)
-        return rawPassword.equals(storedPassword);
+        return new BCryptPasswordEncoder().matches(rawPassword, storedPassword);
     }
 }
