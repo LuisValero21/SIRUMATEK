@@ -25,17 +25,26 @@ public class AuthController {
 
     @Autowired
     private UserRepository userRepository;
+
+    @Autowired
     private UserService userService;
+
+    @Autowired
     private JwtUtil jwtUtil;
 
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody User user) {
-        User foundUser = userService.findByEmail(user.getUsername());
-        if (foundUser != null && passwordMatches(user.getContrasena(), foundUser.getContrasena())) {
-            String token = jwtUtil.generateToken(user.getUsername());
-            return ResponseEntity.ok(token);
+        try {
+            User foundUser = userService.findByEmail(user.getUsername());
+            if (foundUser != null && passwordMatches(user.getContrasena(), foundUser.getContrasena())) {
+                String token = jwtUtil.generateToken(user.getUsername());
+                return ResponseEntity.ok(token);
+            }
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid credentials");
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("An error occurred: " + e.getMessage());
         }
-        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid credentials");
     }
 
     private boolean passwordMatches(String rawPassword, String storedPassword) {
