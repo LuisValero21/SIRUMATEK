@@ -2,6 +2,7 @@ package com.example.sirumatek.service;
 
 import com.example.sirumatek.model.User;
 import com.example.sirumatek.repository.UserRepository;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,6 +21,13 @@ public class UserService {
     public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
+    }
+
+    public User registerUser(User user) {
+        // Encriptar la contraseña antes de almacenarla
+        String hashedPassword = new BCryptPasswordEncoder().encode(user.getContrasena());
+        user.setContrasena(hashedPassword);
+        return userRepository.save(user);
     }
 
     public com.example.sirumatek.model.User findByEmail(String email) {
