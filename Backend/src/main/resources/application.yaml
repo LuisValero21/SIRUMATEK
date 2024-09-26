@@ -14,3 +14,5 @@ spring:
     connection-timeout: 20000
     idle-timeout: 30000
     max-lifetime: 1800000
+  jwt:
+    secret_key: "123456789"
