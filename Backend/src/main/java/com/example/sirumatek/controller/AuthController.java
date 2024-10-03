@@ -40,12 +40,14 @@ public class AuthController {
         try {
             // Busca el usuario por email
             User foundUser = userService.findByEmail(loginRequest.getEmail());
-
-            // Verifica las credenciales
-            if (foundUser != null && passwordEncoder.matches(loginRequest.getPassword(), foundUser.getContrasena())) {
+            // Verifica si el usuario existe y si las contraseñas coinciden
+            if (foundUser != null && foundUser.getContrasena().equals(loginRequest.getPassword())) {
+                // Genera el token JWT
                 String token = jwtUtil.generateToken(foundUser.getCorreo());
                 return ResponseEntity.ok(token);
             }
+
+            // Si las credenciales no coinciden, devuelve una respuesta no autorizada
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid credentials");
         } catch (Exception e) {
             e.printStackTrace();
