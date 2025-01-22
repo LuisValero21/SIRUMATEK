@@ -38,25 +38,25 @@ public class AuthController {
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody LoginRequest loginRequest) {
         try {
-            // Busca el usuario por email
             User foundUser = userService.findByEmail(loginRequest.getEmail());
-            // Verifica si el usuario existe y si las contraseñas coinciden
-            if (foundUser != null && foundUser.getContrasena().equals(loginRequest.getPassword())) {
-                // Genera el token JWT
+
+            if (foundUser != null && passwordEncoder.matches(loginRequest.getPassword(), foundUser.getContrasena())) {
                 String token = jwtUtil.generateToken(foundUser.getCorreo());
-                return ResponseEntity.ok(token);
+                Map<String, String> response = new HashMap<>();
+                response.put("token", token);
+                return ResponseEntity.ok(response);
             }
 
-            // Si las credenciales no coinciden, devuelve una respuesta no autorizada
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid credentials");
         } catch (Exception e) {
-            e.printStackTrace();
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("An error occurred: " + e.getMessage());
         }
     }
 
     @PostMapping("/register")
     public ResponseEntity<User> registerUser(@RequestBody User user) {
+        // Encripta la contraseña antes de guardarla
+        user.setContrasena(passwordEncoder.encode(user.getContrasena()));
         User registeredUser = userService.registerUser(user);
         return ResponseEntity.status(HttpStatus.CREATED).body(registeredUser);
     }
