@@ -1,7 +1,10 @@
 package com.example.sirumatek.util;
 
+import com.example.sirumatek.service.CustomUserDetailsService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
@@ -13,25 +16,18 @@ import java.io.IOException;
 
 @Component
 public class JwtRequestFilter extends OncePerRequestFilter {
+
     @Autowired
     private JwtUtil jwtUtil;
-    private HttpServletRequest request;
-    private HttpServletResponse response;
-    private FilterChain chain;
 
-    public void doFilterInternal()
-            throws ServletException, IOException {
-        doFilterInternal((HttpServletRequest) null, (HttpServletResponse) null, (FilterChain) null);
-    }
+    @Autowired
+    private CustomUserDetailsService customUserDetailsService;
 
     @Override
-    public void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain)
+    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain)
             throws ServletException, IOException {
-        this.request = request;
-        this.response = response;
-        this.chain = chain;
-        final String authorizationHeader = request.getHeader("Authorization");
 
+        final String authorizationHeader = request.getHeader("Authorization");
         String username = null;
         String jwt = null;
 
@@ -41,10 +37,15 @@ public class JwtRequestFilter extends OncePerRequestFilter {
         }
 
         if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
-            // Aquí puedes cargar el usuario y setear la autenticación en el contexto
+            UserDetails userDetails = customUserDetailsService.loadUserByUsername(username);
+
+            if (jwtUtil.validateToken(jwt, userDetails.getUsername())) {
+                UsernamePasswordAuthenticationToken authentication =
+                        new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
+                SecurityContextHolder.getContext().setAuthentication(authentication);
+            }
         }
 
         chain.doFilter(request, response);
     }
-
 }
