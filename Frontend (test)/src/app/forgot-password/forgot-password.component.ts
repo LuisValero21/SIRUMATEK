@@ -1,6 +1,6 @@
+import { HttpClient } from '@angular/common/http';
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
-import { HttpClient } from '@angular/common/http';
 
 @Component({
   selector: 'app-forgot-password',
@@ -10,7 +10,7 @@ import { HttpClient } from '@angular/common/http';
 export class ForgotPasswordComponent {
   correo: string = ''; // Asegúrate de que esta propiedad esté definida
 
-  constructor(private http: HttpClient, private router: Router) {}
+  constructor(private http: HttpClient, private router: Router) { }
 
   sendResetLink() {
     this.http.post('/api/auth/forgot-password', { email: this.correo })
