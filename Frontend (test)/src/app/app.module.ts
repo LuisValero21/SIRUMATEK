@@ -3,6 +3,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { RouterModule, Routes, RouterOutlet } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { CommonModule, DatePipe } from '@angular/common';
+import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { AppComponent } from './app.component';
 import { LoginComponent } from './login/login.component';
 import { MenuAdminComponent } from '././menu-admin/menu-admin.component';
@@ -11,6 +12,7 @@ import { ListaEmpleadosComponent } from './lista-empleados/lista-empleados.compo
 import { ForgotPasswordComponent } from './forgot-password/forgot-password.component';
 import { HttpClientModule } from '@angular/common/http';
 import { AuthService } from '../services/auth.service';
+import { AuthInterceptor } from './http-interceptor/http-interceptor.component';
 /* import { DatePipe } from './date.pipe'; */
 
 const routes: Routes = [
@@ -40,6 +42,9 @@ const routes: Routes = [
     HttpClientModule,
     RouterOutlet
   ],
-  providers: [AuthService]
+  providers: [
+    AuthService,
+    { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true }
+  ]
 })
 export class AppModule { }
