@@ -1,5 +1,6 @@
 package com.example.sirumatek.model;
-
+import java.util.HashMap;
+import java.util.Map;
 import javax.persistence.*;
 
 @Entity
@@ -63,5 +64,13 @@ public class User {
 
     public String getUsername() {
         return null;
+    }
+
+    public Map<String, Object> getInfoUser() {
+        Map<String, Object> dataInfo = new HashMap<>();
+        dataInfo.put("nombre", this.nombre);
+        dataInfo.put("correo", this.correo);
+        dataInfo.put("rol", this.rol);
+        return dataInfo;
     }
 }
