@@ -1,63 +1,72 @@
 package com.example.sirumatek.util;
 
-import java.io.*;
-import com.example.sirumatek.config.MyConfig;
-import io.jsonwebtoken.*;
+import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.security.Keys;
+import io.jsonwebtoken.SignatureAlgorithm;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
+import java.security.Key;
+import java.util.Base64;
 import java.util.Date;
 
 @Component
 public class JwtUtil {
 
+    private final String SECRET_KEY = Base64.getEncoder()
+            .encodeToString("c1b27bca-bf43-4da2-8c2b-6966d556d361".getBytes());
+    private final long EXPIRATION_TIME = 1000 * 60 * 60; //3600 segundos
+
     private static final Logger logger = LoggerFactory.getLogger(JwtUtil.class);
 
-    @Autowired
-    private MyConfig secretKey;
+    private Key getSigningKey() {
+        return Keys.hmacShaKeyFor(SECRET_KEY.getBytes());
+    }
 
-    public String generateToken(String username) {
+    public String generateToken(String correo, Long id) {
         return Jwts.builder()
-                .setSubject(username)
-                .setIssuedAt(new Date(System.currentTimeMillis()))
-                .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 60 * 10)) // Expira en 10 horas
-                .signWith(SignatureAlgorithm.HS256, secretKey.getSecret_key())
+                .setSubject(correo)
+                .claim("id", id)
+                .setIssuedAt(new Date())
+                .setExpiration(new Date(System.currentTimeMillis() + EXPIRATION_TIME))
+                .signWith(getSigningKey(), SignatureAlgorithm.HS256)
                 .compact();
     }
 
     public String extractUsername(String token) {
-        return Jwts.parser()
-                .setSigningKey(secretKey.getSecret_key())
+        return Jwts.parserBuilder()
+                .setSigningKey(getSigningKey())
+                .build()
                 .parseClaimsJws(token)
                 .getBody()
                 .getSubject();
     }
 
-    public boolean validateToken(String token, String username) {
+    public boolean isValidToken(String token) {
         try {
-            final String extractedUsername = extractUsername(token);
-            return extractedUsername.equals(username) && !isTokenExpired(token);
-        } catch (ExpiredJwtException e) {
-            logger.error("JWT expired: {}", e.getMessage());
+            Jwts.parserBuilder()
+                    .setSigningKey(getSigningKey())
+                    .build()
+                    .parseClaimsJws(token);
+            return true;
         } catch (Exception e) {
-            logger.error("JWT validation failed: {}", e.getMessage());
+            logger.error("Token inválido: {}", e.getMessage());
+            return false;
         }
-        return false;
     }
 
-    private boolean isTokenExpired(String token) {
+    public boolean isTokenExpired(String token) {
         return extractExpiration(token).before(new Date());
     }
 
-    private Date extractExpiration(String token) {
-        return Jwts.parser()
-                .setSigningKey(secretKey.getSecret_key())
+    public Date extractExpiration(String token) {
+        return Jwts.parserBuilder()
+                .setSigningKey(getSigningKey())
+                .build()
                 .parseClaimsJws(token)
                 .getBody()
                 .getExpiration();
     }
+
 }
