@@ -40,10 +40,12 @@ public class AuthController {
         try {
             User foundUser = userService.findByEmail(loginRequest.getEmail());
 
-            if (foundUser != null && passwordEncoder.matches(loginRequest.getPassword(), foundUser.getContrasena())) {
-                String token = jwtUtil.generateToken(foundUser.getCorreo());
-                Map<String, String> response = new HashMap<>();
+            if (foundUser != null && foundUser.getContrasena().equals(loginRequest.getPassword())) {
+                String token = jwtUtil.generateToken(foundUser.getCorreo(), foundUser.getId());
+                Map<String, Object> response = new HashMap<>();
                 response.put("token", token);
+                response.put("user", foundUser.getInfoUser());
+                response.put("message", "Inicio de sesion exitoso");
                 return ResponseEntity.ok(response);
             }
 
