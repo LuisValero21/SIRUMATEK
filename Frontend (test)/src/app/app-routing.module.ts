@@ -12,7 +12,7 @@ export const routes: Routes = [
   { path: 'menu-admin', component: MenuAdminComponent },
   { path: 'registrar-empleado', component: RegistrarEmpleadoComponent },
   { path: 'lista-empleados', component: ListaEmpleadosComponent },
-  { path: '', redirectTo: '/login', pathMatch: 'full' }
+  { path: '**', redirectTo: '/login', pathMatch: 'full' } // Redirige cualquier ruta no encontrada al login
 ];
 
 @NgModule({
