@@ -42,7 +42,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
         // Configuración del servicio para cargar el usuario por sus credenciales
-        auth.userDetailsService(customUserDetailsService);
+        auth.userDetailsService(customUserDetailsService).passwordEncoder(passwordEncoder());
     }
 
     @Override
@@ -52,10 +52,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .authorizeRequests()
                 .antMatchers("/api/auth/login", "/api/auth/register").permitAll() // Permite acceso público a login y registro
                 .antMatchers(HttpMethod.POST, "/api/empleados/registrar").permitAll() // Permitir registro de empleados sin autenticación
+                .antMatchers(HttpMethod.GET, "/api/empleados/listar").permitAll() // Permite acceso sin autenticación
                 .antMatchers("/api/test").permitAll() // Permite acceso público a /api/test (si es necesario)
                 .anyRequest().authenticated() // Requiere autenticación para todas las demás solicitudes
                 .and()
-                .csrf().disable(); // Deshabilita CSRF, necesario para usar JWT
+                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
 
         // Agrega el filtro de JWT antes del filtro de autenticación por usuario y contraseña
         http.addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);
@@ -67,6 +68,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         configuration.setAllowedOrigins(Arrays.asList("http://localhost:4200", "*")); // Ajusta según tu dominio
         configuration.setAllowedMethods(Arrays.asList("*"));
         configuration.setAllowedHeaders(Arrays.asList("Authorization", "Cache-Control", "Content-Type"));
+        configuration.setAllowCredentials(true);
 
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", configuration);
