@@ -28,7 +28,9 @@ export class RegistrarEmpleadoComponent {
     this.http.post('http://localhost:8080/api/empleados/registrar', this.empleado)
       .subscribe(response => {
         alert('Empleado registrado con éxito');
-        this.router.navigate(['/lista-empleados']);
+        this.router.navigate(['/menu-admin']).then(() => {
+          window.location.reload(); // Recargar la página para reflejar cambios en la lista de empleados
+        });
       });
   }
 
