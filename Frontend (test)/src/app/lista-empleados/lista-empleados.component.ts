@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { IEmpleado } from '../models/empleado.model';
 import { Router } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
+import { EmpleadoService } from '../../services/empleado.service';
 
 @Component({
   selector: 'app-lista-empleados',
@@ -16,7 +17,11 @@ export class ListaEmpleadosComponent implements OnInit {
   constructor(private http: HttpClient) {}
 
   ngOnInit() {
-    this.http.get<any[]>('/api/empleados/listar')
+    this.cargarEmpleados();
+  }
+
+  cargarEmpleados() {
+    this.http.get<IEmpleado[]>('http://localhost:8080/api/empleados/listar')
       .subscribe(data => {
         console.log('Datos recibidos:', data);
         this.empleados = data;
