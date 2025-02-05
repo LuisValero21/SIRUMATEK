@@ -56,6 +56,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/api/test").permitAll() // Permite acceso público a /api/test (si es necesario)
                 .anyRequest().authenticated() // Requiere autenticación para todas las demás solicitudes
                 .and()
+                .csrf().disable() // Esto para el login
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
 
         // Agrega el filtro de JWT antes del filtro de autenticación por usuario y contraseña
