@@ -12,7 +12,7 @@ import { ListaEmpleadosComponent } from './lista-empleados/lista-empleados.compo
 import { ForgotPasswordComponent } from './forgot-password/forgot-password.component';
 import { HttpClientModule } from '@angular/common/http';
 import { AuthService } from '../services/auth.service';
-import { AuthInterceptor } from './http-interceptor/http-interceptor.component';
+import { AuthInterceptor } from './interceptors/auth-interceptor.service';
 /* import { DatePipe } from './date.pipe'; */
 
 const routes: Routes = [
