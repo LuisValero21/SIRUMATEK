@@ -5,6 +5,7 @@ import com.example.sirumatek.service.CustomUserDetailsService;
 import com.example.sirumatek.util.JwtRequestFilter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -50,6 +51,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http
                 .authorizeRequests()
                 .antMatchers("/api/auth/login", "/api/auth/register").permitAll() // Permite acceso público a login y registro
+                .antMatchers(HttpMethod.POST, "/api/empleados/registrar").permitAll() // Permitir registro de empleados sin autenticación
                 .antMatchers("/api/test").permitAll() // Permite acceso público a /api/test (si es necesario)
                 .anyRequest().authenticated() // Requiere autenticación para todas las demás solicitudes
                 .and()
