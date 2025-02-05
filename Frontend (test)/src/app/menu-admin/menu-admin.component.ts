@@ -11,8 +11,9 @@ export class MenuAdminComponent {
   constructor(private authService: AuthService, private router: Router) {}
 
   logout(): void {
-    this.authService.logout(); // Asumiendo que tienes un método logout en AuthService
-    this.router.navigate(['/login']); // Redirige a la página de login
+    this.authService.logout(); // Llamada al servicio de autenticación
+    localStorage.removeItem('token'); // Elimina el token del almacenamiento local
+    this.router.navigate(['/login']); // Redirige al login
   }
 }
 // throw new Error('Method not implemented.');
