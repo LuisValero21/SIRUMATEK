@@ -29,4 +29,14 @@ public class EmployeeController {
         List<Employee> empleados = employeeService.obtenerTodosLosEmpleados();
         return new ResponseEntity<>(empleados, HttpStatus.OK);
     }
+
+    @DeleteMapping("/eliminar/{id}")
+    public ResponseEntity<String> eliminarEmpleado(@PathVariable Long id) {
+        boolean eliminado = employeeService.eliminarEmpleado(id);
+        if (eliminado) {
+            return ResponseEntity.ok("Empleado eliminado exitosamente.");
+        } else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Empleado no encontrado.");
+        }
+    }
 }
