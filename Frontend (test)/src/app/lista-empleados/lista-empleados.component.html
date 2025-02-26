@@ -63,6 +63,7 @@
           <th>Sexo</th>
           <th>Correo</th>
           <th>Teléfono</th>
+          <th>Acciones</th>
         </tr>
       </thead>
       <tbody>
@@ -76,6 +77,9 @@
           <td>{{empleado.sexo}}</td>
           <td>{{empleado.correo}}</td>
           <td>{{empleado.telefono}}</td>
+          <td>
+            <button *ngIf="empleado.id !== undefined" class="btn btn-danger btn-sm" (click)="eliminarEmpleado(empleado.id)">Eliminar</button>
+          </td>
         </tr>
       </tbody>
     </table>
