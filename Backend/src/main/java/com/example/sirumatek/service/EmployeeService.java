@@ -41,4 +41,12 @@ public class EmployeeService {
     public List<Employee> obtenerTodosLosEmpleados() {
         return employeeRepository.findAll();
     }
+
+    public boolean eliminarEmpleado(Long id) {
+        if (employeeRepository.existsById(id)) {
+            employeeRepository.deleteById(id);
+            return true;
+        }
+        return false;
+    }
 }
