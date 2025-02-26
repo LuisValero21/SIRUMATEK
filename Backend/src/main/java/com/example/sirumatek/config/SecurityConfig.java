@@ -53,6 +53,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/api/auth/login", "/api/auth/register").permitAll() // Permite acceso público a login y registro
                 .antMatchers(HttpMethod.POST, "/api/empleados/registrar").permitAll() // Permitir registro de empleados sin autenticación
                 .antMatchers(HttpMethod.GET, "/api/empleados/listar").permitAll() // Permite acceso sin autenticación
+                .antMatchers(HttpMethod.DELETE, "/api/empleados/eliminar/{id}").permitAll() // Permitir eliminación de empleados por el ID
                 .antMatchers("/api/test").permitAll() // Permite acceso público a /api/test (si es necesario)
                 .anyRequest().authenticated() // Requiere autenticación para todas las demás solicitudes
                 .and()
