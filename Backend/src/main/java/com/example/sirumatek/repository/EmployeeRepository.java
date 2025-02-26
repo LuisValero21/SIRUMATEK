@@ -12,4 +12,5 @@ public interface EmployeeRepository extends JpaRepository<Employee, Long> {
 
     @Query(value = "SELECT * FROM empleado", nativeQuery = true)
     List<Employee> findAllEmployees();
+    void deleteById(Long id);
 }
