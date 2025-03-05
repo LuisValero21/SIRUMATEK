@@ -16,3 +16,9 @@ spring:
     max-lifetime: 1800000
   jwt:
     secret_key: "123456789"
+  sendgrid:
+    api:
+      key: "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"
+    sender:
+      email: "no-responder@sirumatek.com"
+      name: "Sirumatek"
