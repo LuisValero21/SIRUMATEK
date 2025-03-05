@@ -54,6 +54,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers(HttpMethod.POST, "/api/empleados/registrar").permitAll() // Permitir registro de empleados sin autenticación
                 .antMatchers(HttpMethod.GET, "/api/empleados/listar").permitAll() // Permite acceso sin autenticación
                 .antMatchers(HttpMethod.DELETE, "/api/empleados/eliminar/{id}").permitAll() // Permitir eliminación de empleados por el ID
+                .antMatchers(HttpMethod.POST, "/api/email/enviar").permitAll() // Permitir envío de correos automatizado
+                .antMatchers(HttpMethod.POST, "/api/mail/send").permitAll()
                 .antMatchers("/api/test").permitAll() // Permite acceso público a /api/test (si es necesario)
                 .anyRequest().authenticated() // Requiere autenticación para todas las demás solicitudes
                 .and()
