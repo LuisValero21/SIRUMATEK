@@ -23,6 +23,10 @@ public class EmailService {
 
     public String enviarCorreo(String destinatario, String asunto, String templateId, Map<String, String> variables) {
         try {
+            if (destinatario == null || asunto == null || templateId == null) {
+                return "Error: Campos obligatorios faltantes";
+            }
+
             Mail mail = new Mail();
             mail.setFrom(new Email(senderEmail, senderName));
             mail.setSubject(asunto);
@@ -31,9 +35,10 @@ public class EmailService {
             Personalization personalization = new Personalization();
             personalization.addTo(new Email(destinatario));
 
-            // Agregar variables dinámicas a la plantilla
-            for (Map.Entry<String, String> entry : variables.entrySet()) {
-                personalization.addDynamicTemplateData(entry.getKey(), entry.getValue());
+            if (variables != null) {
+                for (Map.Entry<String, String> entry : variables.entrySet()) {
+                    personalization.addDynamicTemplateData(entry.getKey(), entry.getValue());
+                }
             }
 
             mail.addPersonalization(personalization);
