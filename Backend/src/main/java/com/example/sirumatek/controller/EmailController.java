@@ -17,12 +17,20 @@ public class EmailController {
 
     @PostMapping("/enviar")
     public ResponseEntity<String> enviarCorreo(@RequestBody Map<String, Object> request) {
-        String destinatario = (String) request.get("destinatario");
-        String asunto = (String) request.get("asunto");
-        String templateId = (String) request.get("templateId");
-        Map<String, String> variables = (Map<String, String>) request.get("variables");
+        try {
+            String destinatario = (String) request.get("destinatario");
+            String asunto = (String) request.get("asunto");
+            String templateId = (String) request.get("templateId");
+            Map<String, String> variables = (Map<String, String>) request.get("variables");
 
-        String resultado = emailService.enviarCorreo(destinatario, asunto, templateId, variables);
-        return ResponseEntity.ok(resultado);
+            if (destinatario == null || asunto == null || templateId == null) {
+                return ResponseEntity.badRequest().body("Faltan campos obligatorios");
+            }
+
+            String resultado = emailService.enviarCorreo(destinatario, asunto, templateId, variables);
+            return ResponseEntity.ok(resultado);
+        } catch (Exception e) {
+            return ResponseEntity.status(500).body("Error en el servidor: " + e.getMessage());
+        }
     }
 }
