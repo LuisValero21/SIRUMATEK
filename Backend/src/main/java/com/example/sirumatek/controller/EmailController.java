@@ -15,14 +15,23 @@ public class EmailController {
     @Autowired
     private EmailService emailService;
 
+    // Definir una clase interna para recibir el body correctamente
+    public static class EmailRequest {
+        public String destinatario;
+        public String nombreDestinatario;
+        public String asunto;
+        public String templateId;
+        public Map<String, String> variables;
+    }
+
     @PostMapping("/enviar-cumpleanos")
-    public String enviarCorreoCumpleanos(@RequestParam String destinatario, @RequestParam String nombreDestinatario) {
-        String asunto = "¡Feliz cumpleaños!";
-        String templateId = "d-96fcfb13970f4d81b7bd8980786501bc";
-
-        Map<String, String> variables = new HashMap<>();
-        variables.put("nombre", nombreDestinatario);
-
-        return emailService.enviarCorreo(destinatario, nombreDestinatario, asunto, templateId, variables);
+    public String enviarCorreoCumpleanos(@RequestBody EmailRequest request) {
+        return emailService.enviarCorreo(
+                request.destinatario,
+                request.nombreDestinatario,
+                request.asunto,
+                request.templateId,
+                request.variables
+        );
     }
 }
