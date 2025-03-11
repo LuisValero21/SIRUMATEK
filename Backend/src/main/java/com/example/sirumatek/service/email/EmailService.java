@@ -21,42 +21,45 @@ public class EmailService {
     @Value("${sendgrid.sender.name}")
     private String senderName;
 
-    public String enviarCorreo(String destinatario, String asunto, String templateId, Map<String, String> variables) {
+    public String enviarCorreo(String destinatario, String nombreDestinatario, String asunto, String templateId, Map<String, String> variables) {
         try {
             if (destinatario == null || asunto == null || templateId == null) {
                 return "Error: Campos obligatorios faltantes";
             }
 
+            Email from = new Email(senderEmail, senderName);
+            Email to = new Email(destinatario, nombreDestinatario);
             Mail mail = new Mail();
-            mail.setFrom(new Email(senderEmail, senderName));
+            mail.setFrom(from);
             mail.setSubject(asunto);
             mail.setTemplateId(templateId);
 
             Personalization personalization = new Personalization();
-            personalization.addTo(new Email(destinatario));
+            personalization.addTo(to);
 
             if (variables != null) {
-                for (Map.Entry<String, String> entry : variables.entrySet()) {
-                    personalization.addDynamicTemplateData(entry.getKey(), entry.getValue());
-                }
+                variables.forEach(personalization::addDynamicTemplateData);
             }
 
             mail.addPersonalization(personalization);
 
             SendGrid sg = new SendGrid(sendGridApiKey);
             Request request = new Request();
-            request.setMethod(Method.POST);
-            request.setEndpoint("mail/send");
-            request.setBody(mail.build());
-
-            Response response = sg.api(request);
-            if (response.getStatusCode() == 202) {
-                return "Correo enviado con éxito";
-            } else {
-                return "Error al enviar correo: " + response.getBody();
+            try {
+                request.setMethod(Method.POST);
+                request.setEndpoint("mail/send");
+                request.setBody(mail.build());
+                Response response = sg.api(request);
+                if (response.getStatusCode() == 202) {
+                    return "Correo enviado con éxito";
+                } else {
+                    return "Error al enviar correo: " + response.getBody();
+                }
+            } catch (IOException ex) {
+                return "Error al enviar correo: " + ex.getMessage();
             }
-        } catch (IOException e) {
-            throw new RuntimeException("Error al enviar correo", e);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
         }
     }
 }
