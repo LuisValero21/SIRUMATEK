@@ -23,9 +23,7 @@ public class EmailService {
 
     public String enviarCorreo(String destinatario, String nombreDestinatario, String asunto, String templateId, Map<String, String> variables) {
         try {
-            if (destinatario == null || asunto == null || templateId == null) {
-                return "Error: Campos obligatorios faltantes";
-            }
+            System.out.println("Variables enviadas a SendGrid: " + variables);
 
             Email from = new Email(senderEmail, senderName);
             Email to = new Email(destinatario, nombreDestinatario);
@@ -45,21 +43,17 @@ public class EmailService {
 
             SendGrid sg = new SendGrid(sendGridApiKey);
             Request request = new Request();
-            try {
-                request.setMethod(Method.POST);
-                request.setEndpoint("mail/send");
-                request.setBody(mail.build());
-                Response response = sg.api(request);
-                if (response.getStatusCode() == 202) {
-                    return "Correo enviado con éxito";
-                } else {
-                    return "Error al enviar correo: " + response.getBody();
-                }
-            } catch (IOException ex) {
-                return "Error al enviar correo: " + ex.getMessage();
-            }
-        } catch (Exception e) {
-            throw new RuntimeException(e);
+            request.setMethod(Method.POST);
+            request.setEndpoint("mail/send");
+            request.setBody(mail.build());
+
+            Response response = sg.api(request);
+            System.out.println("Código de respuesta SendGrid: " + response.getStatusCode());
+            System.out.println("Cuerpo de respuesta: " + response.getBody());
+
+            return response.getStatusCode() == 202 ? "Correo enviado con éxito" : "Error al enviar correo: " + response.getBody();
+        } catch (IOException ex) {
+            return "Error al enviar correo: " + ex.getMessage();
         }
     }
 }
