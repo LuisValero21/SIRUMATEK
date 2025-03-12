@@ -1,7 +1,6 @@
 package com.example.sirumatek.model;
 
 import javax.persistence.*;
-import java.time.LocalDate;
 import java.util.Date;
 
 @Entity
@@ -23,7 +22,7 @@ public class Employee {
 
     @Column(nullable = false, name = "fecha_nacimiento")
     @Temporal(TemporalType.DATE)
-    private LocalDate fechaNacimiento;
+    private Date fechaNacimiento;
 
     @Column(nullable = false)
     @Temporal(TemporalType.DATE)
@@ -70,7 +69,7 @@ public class Employee {
         this.apellido = apellido;
     }
 
-    public LocalDate getFecha_nacimiento() {
+    public Date getFecha_nacimiento() {
         return fechaNacimiento;
     }
 
