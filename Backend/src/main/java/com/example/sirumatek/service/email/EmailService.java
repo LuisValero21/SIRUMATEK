@@ -79,7 +79,7 @@ public class EmailService {
 
         for (Employee empleado : cumpleaneros) {
             String asunto = "¡Feliz cumpleaños, " + empleado.getNombre() + "!";
-            String templateId = "d-96fcfb13970f4d81b7bd8980786501bc";  // Reemplaza con tu ID de plantilla de SendGrid
+            String templateId = "d-96fcfb13970f4d81b7bd8980786501bc";
 
             Map<String, String> variables = new HashMap<>();
             variables.put("nombre", empleado.getNombre());
