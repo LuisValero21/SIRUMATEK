@@ -1,12 +1,18 @@
 package com.example.sirumatek.service.email;
 
+import com.example.sirumatek.model.Employee;
+import com.example.sirumatek.repository.EmployeeRepository;
 import com.sendgrid.*;
 import com.sendgrid.helpers.mail.Mail;
 import com.sendgrid.helpers.mail.objects.*;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
+import java.time.LocalDate;
+import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @Service
@@ -20,6 +26,12 @@ public class EmailService {
 
     @Value("${sendgrid.sender.name}")
     private String senderName;
+
+    private final EmployeeRepository employeeRepository;
+
+    public EmailService(EmployeeRepository employeeRepository) {
+        this.employeeRepository = employeeRepository;
+    }
 
     public String enviarCorreo(String destinatario, String nombreDestinatario, String asunto, String templateId, Map<String, String> variables) {
         try {
@@ -55,5 +67,27 @@ public class EmailService {
         } catch (IOException ex) {
             return "Error al enviar correo: " + ex.getMessage();
         }
+    }
+
+    @Scheduled(cron = "0 0 8 * * ?")
+    public void enviarCorreosCumpleanos() {
+        LocalDate today = LocalDate.now();
+        int mesActual = today.getMonthValue();
+        int diaActual = today.getDayOfMonth();
+
+        List<Employee> cumpleaneros = employeeRepository.findByMonthAndDay(mesActual, diaActual);
+
+        for (Employee empleado : cumpleaneros) {
+            String asunto = "¡Feliz cumpleaños, " + empleado.getNombre() + "!";
+            String templateId = "TEMPLATE_ID_AQUI";  // Reemplaza con tu ID de plantilla de SendGrid
+
+            Map<String, String> variables = new HashMap<>();
+            variables.put("nombre", empleado.getNombre());
+            variables.put("mensaje", "Esperamos que tengas un gran día lleno de felicidad y éxito.");
+
+            enviarCorreo(empleado.getCorreo(), empleado.getNombre(), asunto, templateId, variables);
+        }
+
+        System.out.println("Correos de cumpleaños enviados: " + cumpleaneros.size());
     }
 }
