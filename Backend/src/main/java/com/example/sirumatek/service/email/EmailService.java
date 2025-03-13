@@ -69,7 +69,7 @@ public class EmailService {
         }
     }
 
-    @Scheduled(cron = "0 0 12 * * ?")
+    @Scheduled(cron = "0 0 9 * * ?")
     public void enviarCorreosCumpleanos() {
         LocalDate today = LocalDate.now();
         int mesActual = today.getMonthValue();
