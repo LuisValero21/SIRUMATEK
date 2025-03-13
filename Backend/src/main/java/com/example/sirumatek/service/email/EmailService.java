@@ -77,17 +77,20 @@ public class EmailService {
 
         List<Employee> cumpleaneros = employeeRepository.findByMonthAndDay(mesActual, diaActual);
 
-        for (Employee empleado : cumpleaneros) {
-            String asunto = "¡Feliz cumpleaños, " + empleado.getNombre() + "!";
-            String templateId = "d-96fcfb13970f4d81b7bd8980786501bc";
+        if (!cumpleaneros.isEmpty()) {
+            for (Employee empleado : cumpleaneros) {
+                String asunto = "🎉 ¡Feliz cumpleaños, " + empleado.getNombre() + "! 🎂";
+                String templateId = "d-96fcfb13970f4d81b7bd8980786501bc";
 
-            Map<String, String> variables = new HashMap<>();
-            variables.put("nombre", empleado.getNombre());
-            variables.put("mensaje", "Esperamos que tengas un gran día lleno de felicidad y éxito.");
+                Map<String, String> variables = new HashMap<>();
+                variables.put("nombre", empleado.getNombre());
+                variables.put("mensaje", "Esperamos que tengas un gran día lleno de alegría y éxito.");
 
-            enviarCorreo(empleado.getCorreo(), empleado.getNombre(), asunto, templateId, variables);
+                enviarCorreo(empleado.getCorreo(), empleado.getNombre(), asunto, templateId, variables);
+            }
+            System.out.println("Correos de cumpleaños enviados a: " + cumpleaneros.size() + " empleados.");
+        } else {
+            System.out.println("Hoy no hay empleados de cumpleaños.");
         }
-
-        System.out.println("Correos de cumpleaños enviados: " + cumpleaneros.size());
     }
 }
